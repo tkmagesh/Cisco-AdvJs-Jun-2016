@@ -3,10 +3,24 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Click Tracker</title>
-
+	<script>
+		(function myApp(){
+			var count = 0;
+			function trackClick(){
+				++count;
+				document.getElementById("divMessage").innerHTML = count;
+			}
+			function init(){
+				var btnTrack = document.getElementById('btnTrack');
+				btnTrack.addEventListener('click', trackClick);
+			}
+			window.addEventListener("DOMContentLoaded", init);
+		})();
+		//myApp();
+	</script>
 </head>
 <body>
 	<input type="button" value="Track" id="btnTrack">
-	<div id="divMessage">[Result]</div>
+	<div id="divMessage" style="color : red; font-size:18pt;">[Result]</div>
 </body>
 </html>
