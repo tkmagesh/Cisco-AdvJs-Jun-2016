@@ -87,3 +87,70 @@ print("Sorting", function(){
 	});
 	
 });
+
+print("Filtering", function(){
+	print("Filter category-1 products", function(){
+		function filterCat1Products(){
+			var result = [];
+			for(var i=0; i < products.length; i++)
+				if (products[i].category === 1)
+					result.push(products[i]);
+			return result;
+		}
+		var category1Products = filterCat1Products();
+		console.table(category1Products);
+	});
+
+	print("Any list by any criteria", function(){
+		function filter(list, criteriaFn){
+			var result = [];
+			for(var i=0; i < list.length; i++)
+				if (criteriaFn(list[i]))
+					result.push(list[i]);
+			return result;
+		}
+		var costlyProductCriteria = function(product){
+			return product.cost > 50;
+		};
+		print("costly products [cost > 50]", function(){
+			var costlyProducts = filter(products, costlyProductCriteria);
+			console.table(costlyProducts);
+		});
+
+		var category1ProductCriteria = function(product){
+			return product.category === 1;
+		};
+		print("category 1 products", function(){
+			var category1Products = filter(products, category1ProductCriteria);
+			console.table(category1Products);
+		});
+
+		/*var affordableProductCriteria = function(product){
+			return product.cost <= 50;
+		}*/
+		/*var affordableProductCriteria = function(product){
+			return !costlyProductCriteria(product);
+		}*/
+		function negate(criteriaFn){
+			return function(){
+				return !criteriaFn.apply(this, arguments);
+			};
+		}
+		var affordableProductCriteria = negate(costlyProductCriteria);
+
+		print("affordable products [cost <= 50]", function(){
+			var affordableProducts = filter(products, affordableProductCriteria);
+			console.table(affordableProducts);
+		});
+		/*var nonCategory1ProductCriteria = function(product){
+			return !category1ProductCriteria(product);
+		};*/
+		var nonCategory1ProductCriteria = negate(category1ProductCriteria);
+		
+		print("non category 1 products", function(){
+			var nonCategory1Products = filter(products, nonCategory1ProductCriteria);
+			console.table(nonCategory1Products);
+		});
+
+	})
+})
